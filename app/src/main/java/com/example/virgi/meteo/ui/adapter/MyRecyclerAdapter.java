@@ -15,6 +15,8 @@ import com.example.virgi.meteo.logic.Utils;
 import com.example.virgi.meteo.ui.activity.DetailActivity;
 import com.example.virgi.meteo.ui.activity.MainActivity;
 
+import java.util.List;
+
 /**
  * Created by virgi on 30/03/2018.
  */
@@ -22,39 +24,39 @@ import com.example.virgi.meteo.ui.activity.MainActivity;
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> {
 
     Context mContext;
-    Intent intent;
+    List<City> values;
 
+    public MyRecyclerAdapter(List<City> values, Context context){
 
-    public MyRecyclerAdapter(Context context){
-        mContext = context;
+        this.values = values;
+        this.mContext = context;
 
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
 
-        private ImageView img;
+        private Context context;
         private TextView txt;
-        private View root;
+        private int position;
+        private String settedName;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            img = itemView.findViewById(R.id.image);
             txt = itemView.findViewById(R.id.text);
 
+            itemView.setOnClickListener(this);
+
         }
 
-        public void setOnclick(String nome){
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    intent = new Intent(mContext, DetailActivity.class);
-                    mContext.startActivity(intent);
-                }
-            });
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(mContext, DetailActivity.class);
+            intent.putExtra("citta", settedName);
+            mContext.startActivity(intent);
+
         }
-
     }
 
     @Override
@@ -68,10 +70,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        City city = Utils.getCityList().get(position);
-        holder.txt.setText(city.getName());
+        City currentCity = values.get(position);
+        holder.txt.setText(currentCity.getName());
+        holder.settedName = currentCity.getName();
+        holder.position = position;
+        holder.context = mContext;
 
-        holder.setOnclick(city.getName());
     }
 
     @Override

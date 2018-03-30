@@ -24,7 +24,7 @@ public class CitySingleton {
         return mInstance;
     }
 
-    public static List<City> getItemList() {
+    public static List<City> getCityList() {
         return cityList;
     }
 

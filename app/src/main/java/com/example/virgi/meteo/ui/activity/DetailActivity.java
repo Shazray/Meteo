@@ -25,50 +25,58 @@ import com.example.virgi.meteo.logic.GsonRequest;
 
 public class DetailActivity extends Activity {
 
-    private final TextView textView = (TextView) findViewById(R.id.nameItemSelected);
-    private final ImageView image = (ImageView) findViewById(R.id.imageItemSelected);
-    private final TextView description = (TextView) findViewById(R.id.descrizione);
+    private TextView textView;
+    private TextView description;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_layout);
 
-        Bundle intent = getIntent().getExtras();
+        textView = (TextView) findViewById(R.id.nameItemSelected);
+        description = (TextView) findViewById(R.id.descrizione);
+        imageView = (ImageView) findViewById(R.id.imageItemSelected);
+
+        final Bundle weatherBundle = new Bundle();
+        weatherBundle.putInt("broken clouds", R.drawable.rain_cloud_icon);
+        weatherBundle.putInt("fog", R.drawable.sun_and_rain_icon);
+        weatherBundle.putInt("few clouds", R.drawable.sun);
 
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Loading..");
         dialog.show();
-        String data = intent.getString("città");
+        String data = getIntent().getStringExtra("citta");
         String url = "http://api.openweathermap.org/data/2.5/weather";
-        String appId ="q=Roma&2439d518e81cee90fd7a61cfe1109dd4";
+        String appId = "2439d518e81cee90fd7a61cfe1109dd4";
 
-        GsonRequest jsonObjectReq = new GsonRequest(url+"?"+"q="+data+"&"+appId, City.class, null,
+        GsonRequest jsonObjectReq = new GsonRequest(url + "?" + "q=" + data + "&appid=" + appId, City.class, null,
                 new Response.Listener<City>() {
                     @Override
                     public void onResponse(City response) {
 
                         textView.setText(response.getName());
-                        description.setText(response.toString());
-
+                        description.setText(response.getWeather().get(0).getDescription());
+                        imageView.setImageResource(weatherBundle.getInt(response.getWeather().get(0).getDescription()));
+                        dialog.dismiss();
                     }
 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                dialog.dismiss();
             }
         });
         // Access the RequestQueue through your singleton class.
         ServiceQueueSingleton.getInstance(this).addToRequestQueue(jsonObjectReq);
 
 
-
-
-        Button backButton = (Button) findViewById(R.id.backButton);
+        final Button backButton = (Button) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                finish();
 
 
             }

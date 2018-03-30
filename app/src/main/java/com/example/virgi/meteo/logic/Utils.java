@@ -21,10 +21,10 @@ public class Utils {
     }
 
     public static List<City> getCityList(){
-        return CitySingleton.getInstance().getItemList();
+        return CitySingleton.getInstance().getCityList();
     }
 
     public static void addCity (City city){
-        CitySingleton.getInstance().getItemList().add(city);
+        CitySingleton.getInstance().getCityList().add(city);
     }
 }
