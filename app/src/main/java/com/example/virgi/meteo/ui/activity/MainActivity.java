@@ -9,12 +9,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.virgi.meteo.R;
+import com.example.virgi.meteo.logic.Utils;
 import com.example.virgi.meteo.ui.adapter.MyRecyclerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView myRecyclerView;
-    private RecyclerView.Adapter<MyRecyclerAdapter.MyViewHolder> myAdapter;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
 
 
 
@@ -23,9 +25,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        myAdapter = new MyRecyclerAdapter();
-        myRecyclerView.setAdapter(myAdapter);
+        Utils.init();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+
+        mAdapter = new MyRecyclerAdapter();
+        mRecyclerView.setAdapter(mAdapter);
 
 
     }
