@@ -1,5 +1,7 @@
 package com.example.virgi.meteo.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         //mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
-        mAdapter = new MyRecyclerAdapter();
+        mAdapter = new MyRecyclerAdapter(getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
 
